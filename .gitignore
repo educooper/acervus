@@ -1,0 +1,7 @@
+venv
+config.py
+OLD
+.env
+google.txt
+__pycache__
+*.OLD
