@@ -5,3 +5,6 @@ OLD
 google.txt
 __pycache__
 *.OLD
+google.txt
+migrations
+flask_session

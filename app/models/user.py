@@ -1,4 +1,4 @@
-from acervus import db
+from app import db
 from flask_login import UserMixin
 
 class User(db.Model, UserMixin):
@@ -6,6 +6,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-    
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+
     def __repr__(self):
         return f'<User {self.email}>'

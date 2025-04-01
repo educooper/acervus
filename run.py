@@ -1,13 +1,12 @@
 from flask import Flask
-from acervus import Acervus
+from app import app
 from flask_sqlalchemy import SQLAlchemy
 from config import SQLALCHEMY_DATABASE_URI
 
-acervus = Flask(__name__)
+app = Flask(__name__)
 
-db = SQLAlchemy(acervus)
-
+db = SQLAlchemy(app)
 
 if __name__ == '__main__':
     db.create_all()
-    acervus.run(debug=True)
+    app.run(debug=True)

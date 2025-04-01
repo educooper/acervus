@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from werkzeug.security import generate_password_hash
 from flask_login import login_user
-from acervus import db
-from acervus.models.user import User
-from acervus.forms.register import RegisterForm
+from app import db
+from app.models.user import User
+from app.forms.register import RegisterForm
 
 register_bp = Blueprint('register', __name__)
 
