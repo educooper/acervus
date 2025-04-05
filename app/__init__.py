@@ -1,40 +1,41 @@
-from flask import Flask,session
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_login import LoginManager
-from flask_session import Session  # 🔹 Adicione esta linha!
+from flask import Flask
 from config import Config
+from app.extensions import db, migrate, login_manager, session, oauth
+from app.routes.auth import auth_bp, configure_google_oauth
+from app.models import User
+from flask_login import LoginManager
 
 
-# Configuração da aplicação via arquivo externo (opcional)
-# app.config.from_pyfile(os.path.join(os.path.dirname(__file__), 'config.py'))
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-# Criar a aplicação Flask
-app = Flask(__name__)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    session.init_app(app)
+    oauth.init_app(app) 
 
-app.config.from_object(Config)
+    login_manager.login_view = "register.login"
 
-app.config['SESSION_TYPE'] = 'filesystem'  # Garante que as sessões são armazenadas corretamente
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_USE_SIGNER'] = True
+    from app.routes.register import register_bp
+    from app.routes.login import login_bp
+    from app.routes.auth import auth_bp
+    from app.routes.main import main_bp
 
+    app.register_blueprint(register_bp, url_prefix='/')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(login_bp)
+    app.register_blueprint(main_bp)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-login_manager = LoginManager(app)
-login_manager.login_view = "register.login"
-Session(app)  # Inicializa o Flask-Session
-
-# Importando Blueprints
-from app.routes.register import register_bp
-from app.routes.auth import auth_bp
-from app.routes.main import main_bp
-
-app.register_blueprint(register_bp, url_prefix='/')
-app.register_blueprint(auth_bp, url_prefix='/auth')
-app.register_blueprint(main_bp)
+    with app.app_context():
+        from app.models.user import User
+        db.create_all()
+        configure_google_oauth()
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    return app

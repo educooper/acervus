@@ -4,6 +4,7 @@ from flask_login import login_user
 from app import db
 from app.models.user import User
 from app.forms.register import RegisterForm
+from sqlalchemy.exc import IntegrityError 
 
 register_bp = Blueprint('register', __name__)
 
@@ -13,10 +14,16 @@ def register():
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
         user = User(name=form.name.data, email=form.email.data, password_hash=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        flash('Cadastro realizado com sucesso!', 'success')
-        return redirect(url_for('dashboard'))
-    
-    return render_template('register.html', form=form)
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            flash('Cadastro realizado com sucesso!', 'success')
+            return redirect(url_for('main.dashboard'))
+
+        except IntegrityError:
+            db.session.rollback()
+            flash('Este email já está cadastrado. Tente outro.', 'danger')
+
+    return render_template('cadastro.html', form=form)

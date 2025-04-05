@@ -1,24 +1,25 @@
-from flask import Blueprint, redirect, url_for, session
+from flask import Blueprint, render_template, redirect, url_for, session, current_app
+from app.extensions import db, oauth
 from authlib.integrations.flask_client import OAuth
-from app import app, db
 from app.models.user import User
 from flask_login import login_user
 
 auth_bp = Blueprint('auth', __name__)
-oauth = OAuth(app)
 
 # Configuração do Google OAuth
-oauth.register(
-    name='google',
-    client_id=app.config['GOOGLE_CLIENT_ID'],
-    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-    authorize_params={'scope': 'openid email profile'},
-    access_token_url='https://oauth2.googleapis.com/token',
-    access_token_params=None,
-    jwks_uri='https://www.googleapis.com/oauth2/v3/certs',  # 🔹 Adicione esta linha!
-    client_kwargs={'scope': 'openid email profile'}
-)
+def configure_google_oauth():
+    oauth.register(
+        name='google',
+        client_id=current_app.config['GOOGLE_CLIENT_ID'],
+        client_secret=current_app.config['GOOGLE_CLIENT_SECRET'],
+        authorize_url='https://accounts.google.com/o/oauth2/auth',
+        authorize_params={'scope': 'openid email profile'},
+        access_token_url='https://oauth2.googleapis.com/token',
+        access_token_params=None,
+        jwks_uri='https://www.googleapis.com/oauth2/v3/certs',
+        client_kwargs={'scope': 'openid email profile'}
+    )
+
 
 # Rota para iniciar login com Google
 @auth_bp.route('/login/google')
@@ -57,4 +58,4 @@ def authorized():
         db.session.commit()
 
     login_user(user)
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.dashboard'))

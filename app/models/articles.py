@@ -1,13 +1,27 @@
 from app import db
+from datetime import datetime
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
-    author = db.Column(db.String(255), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Relacionamento com o usuário
     year = db.Column(db.Integer, nullable=False)
-    tags = db.Column(db.String(255))
     file_url = db.Column(db.String(500))  # Link para o PDF armazenado
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    status = db.Column(db.String(20), default="rascunho")  # ['rascunho', 'submetido', 'aprovado', 'rejeitado']
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    author = db.relationship('User', back_populates='articles')
+    tags = db.relationship('Tag', secondary='article_tags', back_populates='articles')
 
     def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {
+            "id": self.id,
+            "title": self.title,
+            "author_id": self.author_id,
+            "year": self.year,
+            "file_url": self.file_url,
+            "status": self.status,
+            "created_at": self.created_at.isoformat(),
+            "author": self.author.to_dict() if self.author else None,
+            "tags": [tag.name for tag in self.tags]
+        }
