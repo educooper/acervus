@@ -10,6 +10,7 @@ Jinja2
 Flask-RESTful
 Flask-Cors
 Flask-JWT-Extended
+pywhatkit
 
 # Banco de Dados (MySQL)
 mysqlclient==2.2.0  # Driver para MySQL

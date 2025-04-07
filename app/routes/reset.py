@@ -13,7 +13,7 @@ def reset_token(token):
     email = verify_reset_token(token)
     if not email:
         flash('Token inválido ou expirado.', 'danger')
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -21,6 +21,6 @@ def reset_token(token):
         user.password_hash = generate_password_hash(form.password.data)
         db.session.commit()
         flash('Senha atualizada com sucesso!', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
     
     return render_template('reset_password.html', form=form)

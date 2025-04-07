@@ -3,6 +3,8 @@ from werkzeug.security import check_password_hash
 from flask_login import login_user
 from app.forms.login import LoginForm
 from app.models.user import User
+from app.forms.recovery import RecoveryRequestForm
+
 
 login_bp = Blueprint('login', __name__)
 
@@ -18,3 +20,8 @@ def login():
         else:
             flash('E-mail ou senha inválidos.', 'danger')
     return render_template('login.html', form=form)
+
+@login_bp.route("/recovery", methods=["GET", "POST"])
+def recovery():
+    form = RecoveryRequestForm()
+    return render_template("recover_request.html", form=form)

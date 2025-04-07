@@ -28,7 +28,13 @@
                 <span class="text-danger">{{ error }}</span>
             {% endfor %}
         </p>
-
+        <p>
+            {{ form.phone.label }}<br>
+            {{ form.phone(class="form-control") }}
+            {% for error in form.phone.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </p>
         <p>
             {{ form.password.label }}<br>
             {{ form.password(class="form-control") }}

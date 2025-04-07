@@ -24,10 +24,6 @@ def artigos():
 def cadastro():
     return render_template("cadastro.html")
 
-@main_bp.route("/login")
-def login():
-    return render_template("login.html")
-
 @main_bp.route("/dashboard")
 def dashboard():
     return render_template("painel.html")
