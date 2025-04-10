@@ -9,8 +9,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    reset_token = db.Column(db.String(64), nullable=True)
-    reset_token_expiration = db.Column(db.DateTime, nullable=True)
+    codigo_recuperacao = db.Column(db.String(6), nullable=True)
+    phone = db.Column(db.String(20), nullable=False)  # certifique-se de que esse campo está lá
+
 
     def __repr__(self):
         return f'<User {self.email}>'

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Recuperar Senha</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.phone.label }}<br>
+      {{ form.phone(size=20) }}
+    </div>
+    <p>{{ form.submit(class="btn btn-primary") }}</p>
+  </form>
+{% endblock %}

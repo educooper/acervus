@@ -2,9 +2,12 @@ from flask import Flask
 from config import Config
 from app.extensions import db, migrate, login_manager, session, oauth
 from app.routes.auth import auth_bp, configure_google_oauth
-from app.models import User
+from app.models.user import User
+from app.models.articles import Article
+from app.models.tags import Tag, ArticleTags
+from app.models.password_reset_code import PasswordResetCode
 from flask_login import LoginManager
-
+from app.models import * 
 
 def create_app():
     app = Flask(__name__)
@@ -20,7 +23,7 @@ def create_app():
 
     from app.routes.register import register_bp
     from app.routes.login import login_bp
-    from app.routes.auth import auth_bp
+    from app.routes.auth import auth_bp, configure_google_oauth
     from app.routes.main import main_bp
 
     app.register_blueprint(register_bp, url_prefix='/')
