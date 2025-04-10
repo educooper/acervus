@@ -1,4 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Artigos</h2>
+  <h2>Artigos Submetidos</h2>
+  {% for artigo in artigos %}
+    <div class="card my-2 p-3">
+        <h4>{{ artigo.title }}</h4>
+        <p><strong>Ano:</strong> {{ artigo.year }}</p>
+        <p>Status: {{ artigo.status }}</p>
+        {% if artigo.file_url %}
+            <a href="{{ artigo.file_url }}" target="_blank">Ver PDF</a>
+        {% endif %}
+    </div>
+  {% else %}
+    <p>Nenhum artigo encontrado.</p>
+  {% endfor %}
 {% endblock %}

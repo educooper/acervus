@@ -2,6 +2,8 @@ from app.extensions import db
 from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import generate_password_hash
+from app.extensions import db  # ou o caminho do seu db
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -12,6 +14,9 @@ class User(db.Model, UserMixin):
     codigo_recuperacao = db.Column(db.String(6), nullable=True)
     phone = db.Column(db.String(20), nullable=False)  # certifique-se de que esse campo está lá
 
+    #Adicione essa linha aqui
+    
+    articles = db.relationship("Article", back_populates="author", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<User {self.email}>'

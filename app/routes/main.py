@@ -4,6 +4,7 @@
 #def index():
 #    return "<h1>Bem-vindo ao Acervus 2.0!</h1>"
 
+from app.models.articles import Article  # importa o modelo corretamente
 from flask import Blueprint, render_template
 
 main_bp = Blueprint("main", __name__)
@@ -18,7 +19,9 @@ def acervus():
 
 @main_bp.route("/articles")
 def artigos():
-    return render_template("artigos.html")
+    artigos = Article.query.order_by(Article.created_at.desc()).all()
+    return render_template("artigos.html", artigos=artigos)
+
 
 @main_bp.route("/register")
 def cadastro():

@@ -1,0 +1,10 @@
+<!-- templates/artigos/novo.html -->
+<h2>Cadastrar Artigo Científico</h2>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.title.label }} {{ form.title(size=50) }}<br>
+    {{ form.year.label }} {{ form.year() }}<br>
+    {{ form.file.label }} {{ form.file() }}<br>
+    {{ form.tags.label }} {{ form.tags(multiple=True) }}<br>
+    {{ form.submit() }}
+</form>

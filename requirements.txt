@@ -11,7 +11,7 @@ Flask-RESTful
 Flask-Cors
 Flask-JWT-Extended
 pywhatkit
-
+PyMuPDF
 # Banco de Dados (MySQL)
 mysqlclient==2.2.0  # Driver para MySQL
 
