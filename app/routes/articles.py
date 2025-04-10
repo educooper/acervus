@@ -4,7 +4,7 @@ from app.forms.article_form import ArticleForm
 from app.models.articles import Article
 from app.models.tags import Tag
 from app.extensions import db
-from flask_login import current_user, login_required
+from flask_login import current_user, login_requiredd
 import os
 from werkzeug.utils import secure_filename
 from app.utils.pdf_utils import extract_text_from_pdf
@@ -13,7 +13,7 @@ articles_bp = Blueprint('articles', __name__)
 
 UPLOAD_FOLDER = 'app/static/uploads'
 
-@articles_bp.route('/artigos/novo', methods=['GET', 'POST'])
+@articles_bp.route('/articles/novo', methods=['GET', 'POST'])
 
 @login_required
 def novo_artigo():

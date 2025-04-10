@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, session, current_app
+from flask import Blueprint, render_template, redirect, url_for, session, current_app, flash
 from app.extensions import db, oauth
 from authlib.integrations.flask_client import OAuth
 from app.models.user import User
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -59,3 +59,10 @@ def authorized():
 
     login_user(user)
     return redirect(url_for('main.dashboard'))
+
+
+@auth_bp.route('/logout')
+def logout():
+    logout_user()
+    flash('Você saiu da sua conta com sucesso.', 'info')
+    return redirect(url_for('main.index'))
