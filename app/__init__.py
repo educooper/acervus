@@ -9,6 +9,7 @@ from app.models.password_reset_code import PasswordResetCode
 from flask_login import LoginManager
 from app.models import * 
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -25,7 +26,10 @@ def create_app():
     from app.routes.login import login_bp
     from app.routes.auth import auth_bp, configure_google_oauth
     from app.routes.main import main_bp
-
+    from app.routes.articles import articles_bp
+    
+    
+    app.register_blueprint(articles_bp)
     app.register_blueprint(register_bp, url_prefix='/')
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(login_bp)

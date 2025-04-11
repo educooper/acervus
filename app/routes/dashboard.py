@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from app.models.articles import Article
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
@@ -9,6 +10,7 @@ def dashboard():
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
         user = User(name=form.name.data, email=form.email.data, password_hash=hashed_password)
+        artigos = Article.query.filter_by(user_id=current_user.id).order_by(Article.created_at.desc()).all()
         db.session.add(user)
         db.session.commit()
         login_user(user)

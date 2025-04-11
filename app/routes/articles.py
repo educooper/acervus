@@ -4,7 +4,7 @@ from app.forms.article_form import ArticleForm
 from app.models.articles import Article
 from app.models.tags import Tag
 from app.extensions import db
-from flask_login import current_user, login_requiredd
+from flask_login import current_user, login_required
 import os
 from werkzeug.utils import secure_filename
 from app.utils.pdf_utils import extract_text_from_pdf
@@ -43,6 +43,27 @@ def novo_artigo():
         db.session.add(artigo)
         db.session.commit()
         flash('Artigo cadastrado com sucesso com indexação!')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.dashboard'))
 
     return render_template('artigos/novo.html', form=form)
+
+
+@articles_bp.route('/articles/editar/<int:artigo_id>', methods=['GET', 'POST'], endpoint='editar_artigo')
+@login_required
+def editar_artigo(artigo_id):
+    artigo = Article.query.get_or_404(artigo_id)
+
+    if artigo.user_id != current_user.id:
+        flash('Você não tem permissão para editar este artigo.', 'danger')
+        return redirect(url_for('main.dashboard'))
+
+    form = ArticleForm(obj=artigo)
+
+    if form.validate_on_submit():
+        artigo.title = form.title.data
+        artigo.content = form.content.data
+        db.session.commit()
+        flash('Artigo atualizado com sucesso!', 'success')
+        return redirect(url_for('main.dashboard'))
+
+    return render_template('artigos/editar.html', form=form, artigo=artigo)
