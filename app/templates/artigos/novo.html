@@ -1,4 +1,6 @@
 <!-- templates/artigos/novo.html -->
+{% extends "base.html" %}
+{% block content %}
 <h2>Cadastrar Artigo Científico</h2>
 <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
@@ -8,3 +10,4 @@
     {{ form.tags.label }} {{ form.tags(multiple=True) }}<br>
     {{ form.submit() }}
 </form>
+{% endblock %}

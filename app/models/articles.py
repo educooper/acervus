@@ -1,17 +1,17 @@
 #models/articles.py
 from app.extensions import db
 from datetime import datetime
+from sqlalchemy.dialects.mysql import LONGTEXT
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(360), nullable=False)
-    content = db.Column(db.Text) 
+    content = db.Column(LONGTEXT)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Relacionamento com o usuário
     year = db.Column(db.Integer, nullable=False)
     file_url = db.Column(db.String(500))  # Link para o PDF armazenado
     status = db.Column(db.String(20), default="rascunho")  # ['rascunho', 'submetido', 'aprovado', 'rejeitado']
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
     author = db.relationship('User', back_populates='articles')
     tags = db.relationship('Tag', secondary='article_tags', back_populates='articles')
 
