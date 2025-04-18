@@ -8,6 +8,7 @@ from app.models.tags import Tag, ArticleTags
 from app.models.password_reset_code import PasswordResetCode
 from flask_login import LoginManager
 from app.models import * 
+from .routes import register_routes
 
 
 def create_app():
@@ -19,6 +20,8 @@ def create_app():
     login_manager.init_app(app)
     session.init_app(app)
     oauth.init_app(app) 
+    
+    register_routes(app)
 
     login_manager.login_view = "register.login"
 

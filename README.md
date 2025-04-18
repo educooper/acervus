@@ -1,6 +1,9 @@
 # acervus
 Sistema de Publicação Promoção e Compartilhamento de Artigos Científicos
 
+Além da interface web tradicional, o sistema fornece uma API RESTful para permitir integração com aplicativos móveis, automações de submissão, e futuras plataformas de indexação científica. A API implementa autenticação segura via JWT e permite operações completas de cadastro, edição e consulta de artigos.
+
+
 
 ```shell
 python3 -m venv venv
@@ -53,7 +56,21 @@ $env:FLASK_APP="app"
 flask run
 ```
 
-Estrutura do projeto Fase 1
+Estrutura do projeto Fase 2
+
+
+```
+GET     /api/articles               # Lista artigos
+POST    /api/articles               # Cadastra novo artigo
+GET     /api/articles/<id>          # Detalhes de um artigo
+PUT     /api/articles/<id>          # Atualiza um artigo
+DELETE  /api/articles/<id>          # Remove um artigo
+
+GET     /api/articles/search?q=...  # Busca avançada por termo, tag, autor
+
+POST    /api/login                  # Autentica e retorna JWT
+GET     /api/user/articles          # Lista artigos submetidos pelo usuário logado
+```
 
 
 
